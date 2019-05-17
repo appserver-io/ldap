@@ -59,7 +59,7 @@ class RepositoryDescriptor extends BeanDescriptor implements RepositoryDescripto
     /**
      * Sets the distinguished name of the repository.
      *
-     * @return string $distinguishedName The repository's distinguished name
+     * @param string $distinguishedName The repository's distinguished name
      *
      * @return void
      */
