@@ -42,7 +42,7 @@ interface EntityManagerInterface
     /**
      * Returns the repository instance for the passed class.
      *
-     * @param string $class The class name to return the repository for
+     * @param string $entityName The class name to return the repository for
      *
      * @return object The LDAP repository instance
      */
