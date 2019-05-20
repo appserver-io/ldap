@@ -20,8 +20,7 @@
 
 namespace AppserverIo\Ldap\Description\Annotations;
 
-use Doctrine\Common\Annotations\Annotation\Required;
-use AppserverIo\Psr\EnterpriseBeans\Annotations\Inject;
+use AppserverIo\Psr\EnterpriseBeans\Annotations\AbstractBeanAnnotation;
 
 /**
  * Annotation implementation for a LDAP query.
@@ -34,14 +33,13 @@ use AppserverIo\Psr\EnterpriseBeans\Annotations\Inject;
  *
  * @Annotation
  */
-class Query extends Inject
+class Query extends AbstractBeanAnnotation
 {
 
     /**
      * The search base.
      *
      * @var string
-     * @Required()
      */
     protected $searchBase;
 

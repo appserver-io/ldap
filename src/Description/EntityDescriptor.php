@@ -27,6 +27,7 @@ use AppserverIo\Description\Configuration\ConfigurationInterface;
 use AppserverIo\Psr\EnterpriseBeans\EnterpriseBeansException;
 use AppserverIo\Ldap\Description\Annotations\Entity;
 use AppserverIo\Ldap\Description\Configuration\EntityConfigurationInterface;
+use AppserverIo\Ldap\Description\Configuration\IdentifierConfigurationInterface;
 
 /**
  * Simple descriptor implementation for LDAP entities.
@@ -41,11 +42,25 @@ class EntityDescriptor extends AbstractNameAwareDescriptor implements EntityDesc
 {
 
     /**
+     * The LDAP entity identifier.
+     *
+     * @var string
+     */
+    protected $identifier;
+
+    /**
      * The entity repository name.
      *
      * @var string
      */
     protected $repository;
+
+    /**
+     * The array with the entity's fields.
+     *
+     * @var array
+     */
+    protected $fields = array();
 
     /**
      * Sets the entity repository type.
@@ -67,6 +82,76 @@ class EntityDescriptor extends AbstractNameAwareDescriptor implements EntityDesc
     public function getRepository()
     {
         return $this->repository;
+    }
+
+    /**
+     * Sets the entity identifier.
+     *
+     * @param string $identifier
+     *
+     * @return void
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+    }
+
+    /**
+     * Returns the entity identifier.
+     *
+     * @return string The identifier
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    /**
+     * Sets the array with the passed field descriptors.
+     *
+     * @param array $fields The array with the field descriptors
+     *
+     * @return void
+     */
+    public function setFields(array $fields)
+    {
+        $this->fields = $fields;
+    }
+
+    /**
+     * Adds the passed field descriptor.
+     *
+     * @param \AppserverIo\Ldap\Description\FieldDescriptorInterface $field The field descriptor to add
+     *
+     * @return void
+     */
+    public function addField(FieldDescriptorInterface $field)
+    {
+        $this->fields[$field->getName()] = $field;
+    }
+
+    /**
+     * Returns the entity's fields.
+     *
+     * @return array The array with the fields
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * Returns the field descriptor for the field with the given name.
+     *
+     * @param string $name The name of the field to return the descriptor for
+     *
+     * @return \AppserverIo\Ldap\Description\FieldDescriptorInterface|null The field descriptor
+     */
+    public function getField($name)
+    {
+        if (isset($this->fields[$name])) {
+            return $this->fields[$name];
+        }
     }
 
     /**
@@ -127,6 +212,13 @@ class EntityDescriptor extends AbstractNameAwareDescriptor implements EntityDesc
             $this->setRepository((DescriptorUtil::trim($repository)));
         }
 
+        // load the fields + the identifier from the properties
+        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
+            if ($fieldDescriptor = FieldDescriptor::newDescriptorInstance()->fromReflectionProperty($reflectionProperty)) {
+                $this->addField($fieldDescriptor);
+            }
+        }
+
         // return the instance
         return $this;
     }
@@ -142,6 +234,7 @@ class EntityDescriptor extends AbstractNameAwareDescriptor implements EntityDesc
     {
 
         // query whether or not we've preference configuration
+        /** @var \AppserverIo\Ldap\Description\Configuration\EntityConfigurationInterface $configuration */
         if (!$configuration instanceof EntityConfigurationInterface) {
             return;
         }
@@ -159,6 +252,13 @@ class EntityDescriptor extends AbstractNameAwareDescriptor implements EntityDesc
         // query for the repository and set it
         if ($repository = (string) $configuration->getRepository()) {
             $this->setRepository(DescriptorUtil::trim($repository));
+        }
+
+        // load the fields from the properties
+        foreach ($configuration->getFields() as $field) {
+            if ($fieldDescriptor = FieldDescriptor::newDescriptorInstance()->fromConfiguration($field)) {
+                $this->addField($fieldDescriptor);
+            }
         }
 
         // return the instance
@@ -191,6 +291,16 @@ class EntityDescriptor extends AbstractNameAwareDescriptor implements EntityDesc
         // merge the repository
         if ($repository = $entityDescriptor->getRepository()) {
             $this->setRepository($repository);
+        }
+
+        // merge the identifier
+        if ($identifier = $entityDescriptor->getIdentifier()) {
+            $this->setIdentifier($identifier);
+        }
+
+        // override the fields with the ones from the passed descriptor
+        foreach ($entityDescriptor->getFields() as $field) {
+            $this->addField($field);
         }
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AppserverIo\Ldap\Description\Configuration\LdapConfigurationInterface
+ * \AppserverIo\Ldap\Description\Configuration\LdapConfigurationInterface
  *
  * NOTICE OF LICENSE
  *
@@ -20,8 +20,10 @@
 
 namespace AppserverIo\Ldap\Description\Configuration;
 
+use AppserverIo\Psr\Deployment\DescriptorInterface;
+
 /**
- * Interface for LDAP description implementations.
+ * Interface for LDAP configuration implementations.
  *
  * @author    Tim Wagner <tw@appserver.io>
  * @copyright 2019 TechDivision GmbH <info@appserver.io>
@@ -29,20 +31,13 @@ namespace AppserverIo\Ldap\Description\Configuration;
  * @link      https://github.com/appserver-io/ldap
  * @link      http://www.appserver.io
  */
-interface ConfigurationInterface extends \AppserverIo\Description\Configuration\ConfigurationInterface
+interface LdapConfigurationInterface extends DescriptorInterface
 {
 
     /**
-     * Returns the name.
+     * Returns the array with the repositorys.
      *
-     * @return string The name
+     * @return array The array with the repositories
      */
-    public function getName();
-
-    /**
-     * Returns the description information.
-     *
-     * @return \AppserverIo\Description\Api\Node\ValueNode The description information
-     */
-    public function getDescription();
+    public function getRepositories();
 }

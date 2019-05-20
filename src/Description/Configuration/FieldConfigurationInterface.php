@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AppserverIo\Ldap\Description\Configuration\LdapConfigurationInterface
+ * AppserverIo\Ldap\Description\Configuration\EntityConfigurationInterface.php
  *
  * NOTICE OF LICENSE
  *
@@ -21,7 +21,7 @@
 namespace AppserverIo\Ldap\Description\Configuration;
 
 /**
- * Interface for LDAP description implementations.
+ * Interface for LDAP entity field description implementations.
  *
  * @author    Tim Wagner <tw@appserver.io>
  * @copyright 2019 TechDivision GmbH <info@appserver.io>
@@ -29,20 +29,20 @@ namespace AppserverIo\Ldap\Description\Configuration;
  * @link      https://github.com/appserver-io/ldap
  * @link      http://www.appserver.io
  */
-interface ConfigurationInterface extends \AppserverIo\Description\Configuration\ConfigurationInterface
+interface FieldConfigurationInterface extends ConfigurationInterface
 {
 
     /**
-     * Returns the name.
+     * Returns the LDAP field name.
      *
-     * @return string The name
+     * @return string The LDAP field name
      */
-    public function getName();
+    public function getLdapName();
 
     /**
-     * Returns the description information.
+     * Returns the LDAP field type.
      *
-     * @return \AppserverIo\Description\Api\Node\ValueNode The description information
+     * @return string The LDAP field type
      */
-    public function getDescription();
+    public function getLdapType();
 }

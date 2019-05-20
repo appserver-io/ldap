@@ -33,6 +33,13 @@ interface EntityConfigurationInterface extends ConfigurationInterface
 {
 
     /**
+     * Returns the entity identifier description information.
+     *
+     * @return string The entity identifier information
+     */
+    public function getIdentifier();
+
+    /**
      * Returns the entity repository type.
      *
      * @return string The repository type

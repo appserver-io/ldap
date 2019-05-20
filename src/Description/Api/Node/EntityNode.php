@@ -61,9 +61,25 @@ class EntityNode extends AbstractNode implements EntityConfigurationInterface
     protected $repository;
 
     /**
-     * Returns the repository name information.
+     * The entity identifier type information.
      *
-     * @return \AppserverIo\Description\Api\Node\ValueNode The repository name information
+     * @var \AppserverIo\Description\Api\Node\ValueNode
+     * @DI\Mapping(nodeName="repository", nodeType="AppserverIo\Description\Api\Node\ValueNode")
+     */
+    protected $identifier;
+
+    /**
+     * The entity fields information.
+     *
+     * @var array
+     * @DI\Mapping(nodeName="fields/field", nodeType="array", elementType="AppserverIo\Ldap\Description\Api\Node\FieldNode")
+     */
+    protected $fields = array();
+
+    /**
+     * Returns the entity name information.
+     *
+     * @return string The repository name information
      */
     public function getName()
     {
@@ -71,13 +87,23 @@ class EntityNode extends AbstractNode implements EntityConfigurationInterface
     }
 
     /**
-     * Returns the repository description information.
+     * Returns the entity description information.
      *
-     * @return \AppserverIo\Description\Api\Node\ValueNode The repository description information
+     * @return string The repository description information
      */
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Returns the entity identifier description information.
+     *
+     * @return string The entity identifier information
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
     }
 
     /**
@@ -88,5 +114,15 @@ class EntityNode extends AbstractNode implements EntityConfigurationInterface
     public function getRepository()
     {
         return $this->repository;
+    }
+
+    /**
+     * Returns the array with the entity fields information.
+     *
+     * @return array The array with the entity fields information
+     */
+    public function getFields()
+    {
+        return $this->fields;
     }
 }

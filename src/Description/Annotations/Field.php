@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AppserverIo\Ldap\Description\Annotations\Repository
+ * AppserverIo\Ldap\Description\Annotations\Field
  *
  * NOTICE OF LICENSE
  *
@@ -12,7 +12,7 @@
  * PHP version 5
  *
  * @author    Tim Wagner <tw@appserver.io>
- * @copyright 2015 TechDivision GmbH <info@appserver.io>
+ * @copyright 2019 TechDivision GmbH <info@appserver.io>
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      https://github.com/appserver-io/ldap
  * @link      http://www.appserver.io
@@ -21,72 +21,70 @@
 namespace AppserverIo\Ldap\Description\Annotations;
 
 use Doctrine\Common\Annotations\Annotation\Target;
-use Doctrine\Common\Annotations\Annotation\Required;
-use AppserverIo\Psr\EnterpriseBeans\Annotations\Inject;
+use AppserverIo\Psr\EnterpriseBeans\Annotations\AbstractBeanAnnotation;
 
 /**
- * Annotation implementation for a LDAP repository.
+ * Annotation implementation for a LDAP entity field type.
  *
  * @author    Tim Wagner <tw@appserver.io>
- * @copyright 2015 TechDivision GmbH <info@appserver.io>
+ * @copyright 2019 TechDivision GmbH <info@appserver.io>
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      https://github.com/appserver-io/ldap
  * @link      http://www.appserver.io
  *
  * @Annotation
- * @Target({"CLASS"})
+ * @Target({"PROPERTY"})
  */
-class Repository extends Inject
+class Field extends AbstractBeanAnnotation
 {
 
     /**
-     * The distinguished name.
+     * The LDAP field name.
      *
      * @var string
-     * @Required()
      */
-    protected $distinguishedName;
+    protected $ldapName;
 
     /**
-     * The querys.
+     * The LDAP field type.
      *
-     * @var array<\AppserverIo\Ldap\Description\Annotations\Query>
+     * @var string
      */
-    protected $queries = array();
+    protected $ldapType;
 
     /**
      * Initializes the annotation with the data from the doc block.
      *
      * @param array $values The values from the doc block
      */
-    public function __construct(array $values)
+    public function __construct(array $values = array())
     {
 
         // pass the values to the parent instance
         parent::__construct($values);
 
-        // set the queries and the DN
-        $this->distinguishedName = $values['distinguishedName'];
-        $this->queries = isset($values['queries']) ? $values['queries'] : array();
+        // set the LDAP field name + type
+        $this->ldapName = $values['ldapName'];
+        $this->ldapName = $values['ldapType'];
     }
 
     /**
-     * Returns the distinguished name.
+     * Returns the LDAP field name.
      *
-     * @return string The distinguished name
+     * @return string The LDAP field name
      */
-    public function getDistinguishedName()
+    public function getLdapName()
     {
-        return $this->distinguishedName;
+        return $this->ldapName;
     }
 
     /**
-     * Returns the querys.
+     * Returns the LDAP field type.
      *
-     * @return array<\AppserverIo\Ldap\Description\Annotations\Query> The array with the queries
+     * @return string The LDAP field type
      */
-    public function getQueries()
+    public function getLdapType()
     {
-        return $this->queries;
+        return $this->ldapType;
     }
 }

@@ -38,4 +38,32 @@ interface LdapManagerInterface
      * @var string
      */
     const IDENTIFIER = 'LdapManagerInterface';
+
+    /**
+     * Runs a lookup for the entity with the passed lookup name.
+     *
+     * @param string $lookupName The lookpu name of the entity class
+     *
+     * @return object The requested entity instance
+     */
+    public function lookup($lookupName);
+
+    /**
+     * Lookup the LDAP repository for the entity with the passed lookup name.
+     *
+     * @param string $lookupName The lookup name of the entity to return the repository for
+     * @param array  $args       The arguments passed to the repository's constructor
+     *
+     * @return object The repository instance
+     */
+    public function lookupRepositoryByEntityName($lookupName, array $args = array());
+
+    /**
+     * Returns the object descriptor for the repository with the passed class name.
+     *
+     * @param string $className The class name to return the object descriptor for
+     *
+     * @return \AppserverIo\Ldap\Description\RepositoryDescriptorInterface The requested repository descriptor instance
+     */
+    public function lookupDescriptorByClassName($className);
 }

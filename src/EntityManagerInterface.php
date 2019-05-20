@@ -40,25 +40,39 @@ interface EntityManagerInterface
     public function getLdapClient();
 
     /**
-     * Returns the repository instance for the passed class.
+     * Returns the persistence unit configuration instance.
      *
-     * @param string $entityName The class name to return the repository for
+     * @return \AppserverIo\Description\Configuration\PersistenceUnitConfigurationInterface The configuration instance
+     */
+    public function getConfiguration();
+
+    /**
+     * Returns the base DN => database in datasource configuration.
+     *
+     * @return string The base DN
+     */
+    public function getBaseDn();
+
+    /**
+     * Returns the repository instance for the entity with the passed lookup name.
+     *
+     * @param string $lookupName The lookup name of the entity to return the repository for
      *
      * @return object The LDAP repository instance
      */
-    public function getRepository($entityName);
+    public function getRepository($lookupName);
 
     /**
-     * Finds an entity by its identifier.
+     * Finds an entity by its lookup name.
      *
-     * @param string $entityName The class name of the entity to find
+     * @param string $lookupName The look name of the entity to find
      * @param mixed  $id         The identity of the entity to find
      *
      * @return object|null The entity instance or NULL if the entity can not be found.
      *
      * @throws \Exception
      */
-    public function find($entityName, $id);
+    public function find($lookupName, $id);
 
     /**
      * Tells the EntityManager to make an instance managed and persistent.

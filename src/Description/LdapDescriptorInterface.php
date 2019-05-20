@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AppserverIo\Ldap\Description\EntityDescriptorInterface
+ * AppserverIo\Ldap\Description\LdapDescriptorInterface
  *
  * NOTICE OF LICENSE
  *
@@ -20,6 +20,8 @@
 
 namespace AppserverIo\Ldap\Description;
 
+use AppserverIo\Psr\Deployment\DescriptorInterface;
+
 /**
  * Interface for LDAP entity descriptor implementations.
  *
@@ -29,36 +31,13 @@ namespace AppserverIo\Ldap\Description;
  * @link      https://github.com/appserver-io/ldap
  * @link      http://www.appserver.io
  */
-interface EntityDescriptorInterface extends LdapDescriptorInterface
+interface LdapDescriptorInterface extends DescriptorInterface
 {
 
     /**
-     * Returns the entity identifier.
+     * Returns the entity name.
      *
-     * @return \AppserverIo\Ldap\Description\IdentifierDescriptorInterface
+     * @return string The entity name
      */
-    public function getIdentifier();
-
-    /**
-     * Returns the entity repository type.
-     *
-     * @return string The repository type
-     */
-    public function getRepository();
-
-    /**
-     * Returns the entity's fields.
-     *
-     * @return array The array with the fields
-     */
-    public function getFields();
-
-    /**
-     * Returns the field descriptor for the field with the given name.
-     *
-     * @param string $name The name of the field to return the descriptor for
-     *
-     * @return \AppserverIo\Ldap\Description\FieldDescriptorInterface|null The field descriptor
-     */
-    public function getField($name);
+    public function getName();
 }

@@ -48,7 +48,7 @@ class RepositoryNode extends BeanNode implements RepositoryConfigurationInterfac
      * The repository query information.
      *
      * @var array
-     * @DI\Mapping(nodeName="queries", nodeType="array", elementType="AppserverIo\Ldap\Description\Api\Node\QueryNode")
+     * @DI\Mapping(nodeName="queries/query", nodeType="array", elementType="AppserverIo\Ldap\Description\Api\Node\QueryNode")
      */
     protected $queries = array();
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * \AppserverIo\Ldap\Description\Api\Node\QueryNode
+ * \AppserverIo\Ldap\Description\Api\Node\FieldNode
  *
  * NOTICE OF LICENSE
  *
@@ -12,7 +12,7 @@
  * PHP version 5
  *
  * @author    Tim Wagner <tw@appserver.io>
- * @copyright 2015 TechDivision GmbH <info@appserver.io>
+ * @copyright 2019 TechDivision GmbH <info@appserver.io>
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      https://github.com/appserver-io/ldap
  * @link      http://www.appserver.io
@@ -22,22 +22,22 @@ namespace AppserverIo\Ldap\Description\Api\Node;
 
 use AppserverIo\Description\Annotations as DI;
 use AppserverIo\Description\Api\Node\AbstractNode;
-use AppserverIo\Ldap\Description\Configuration\QueryConfigurationInterface;
+use AppserverIo\Ldap\Description\Configuration\FieldConfigurationInterface;
 
 /**
- * Node implementation to transfer LDAP repository configuration.
+ * Node implementation to transfer LDAP entity field configuration.
  *
  * @author    Tim Wagner <tw@appserver.io>
- * @copyright 2015 TechDivision GmbH <info@appserver.io>
+ * @copyright 2019 TechDivision GmbH <info@appserver.io>
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      https://github.com/appserver-io/ldap
  * @link      http://www.appserver.io
  */
-class QueryNode extends AbstractNode implements QueryConfigurationInterface
+class FieldNode extends AbstractNode implements FieldConfigurationInterface
 {
 
     /**
-     * The query name information.
+     * The field name information.
      *
      * @var \AppserverIo\Description\Api\Node\ValueNode
      * @DI\Mapping(nodeName="name", nodeType="AppserverIo\Description\Api\Node\ValueNode")
@@ -45,7 +45,7 @@ class QueryNode extends AbstractNode implements QueryConfigurationInterface
     protected $name;
 
     /**
-     * The query description information.
+     * The field description information.
      *
      * @var \AppserverIo\Description\Api\Node\ValueNode
      * @DI\Mapping(nodeName="description", nodeType="AppserverIo\Description\Api\Node\ValueNode")
@@ -53,25 +53,25 @@ class QueryNode extends AbstractNode implements QueryConfigurationInterface
     protected $description;
 
     /**
-     * The query search base information.
+     * The LDAP name information.
      *
      * @var \AppserverIo\Description\Api\Node\ValueNode
-     * @DI\Mapping(nodeName="search-base", nodeType="AppserverIo\Description\Api\Node\ValueNode")
+     * @DI\Mapping(nodeName="ldap-name", nodeType="AppserverIo\Description\Api\Node\ValueNode")
      */
-    protected $searchBase;
+    protected $ldapName;
 
     /**
-     * The query filter information.
+     * The LDAP type information.
      *
-     * @var string
-     * @DI\Mapping(nodeName="filter", nodeType="AppserverIo\Description\Api\Node\ValueNode")
+     * @var \AppserverIo\Description\Api\Node\ValueNode
+     * @DI\Mapping(nodeName="ldap-type", nodeType="AppserverIo\Description\Api\Node\ValueNode")
      */
-    protected $filter;
+    protected $ldapType;
 
     /**
-     * Returns the repository name information.
+     * Returns the name information.
      *
-     * @return \AppserverIo\Description\Api\Node\ValueNode The repository name information
+     * @return \AppserverIo\Description\Api\Node\ValueNode The name information
      */
     public function getName()
     {
@@ -79,9 +79,9 @@ class QueryNode extends AbstractNode implements QueryConfigurationInterface
     }
 
     /**
-     * Returns the repository description information.
+     * Returns the description information.
      *
-     * @return \AppserverIo\Description\Api\Node\ValueNode The repository description information
+     * @return \AppserverIo\Description\Api\Node\ValueNode The description information
      */
     public function getDescription()
     {
@@ -89,22 +89,22 @@ class QueryNode extends AbstractNode implements QueryConfigurationInterface
     }
 
     /**
-     * Returns the query's search base.
+     * Returns the LDAP name information.
      *
-     * @return string The search base
+     * @return string The LDAP name information
      */
-    public function getSearchBase()
+    public function getLdapName()
     {
-        return $this->searchBase;
+        return $this->ldapName;
     }
 
     /**
-     * Returns the query's filter.
+     * Returns the LDAP type information.
      *
-     * @return string The filter
+     * @return string The LDAP type information
      */
-    public function getFilter()
+    public function getLdapType()
     {
-        return $this->filter;
+        return $this->ldapType;
     }
 }

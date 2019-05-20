@@ -22,7 +22,7 @@ namespace AppserverIo\Ldap\Description\Annotations;
 
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\Annotation\Required;
-use AppserverIo\Psr\EnterpriseBeans\Annotations\Inject;
+use AppserverIo\Psr\EnterpriseBeans\Annotations\AbstractBeanAnnotation;
 
 /**
  * Annotation implementation for a LDAP entity.
@@ -36,7 +36,7 @@ use AppserverIo\Psr\EnterpriseBeans\Annotations\Inject;
  * @Annotation
  * @Target({"CLASS"})
  */
-class Entity extends Inject
+class Entity extends AbstractBeanAnnotation
 {
 
     /**

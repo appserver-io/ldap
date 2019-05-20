@@ -29,6 +29,7 @@ use AppserverIo\Psr\EnterpriseBeans\Description\FactoryAwareDescriptorInterface;
 use AppserverIo\Psr\EnterpriseBeans\Description\MethodInvocationAwareDescriptorInterface;
 use AppserverIo\Ldap\Description\Annotations\Repository;
 use AppserverIo\Ldap\Description\Configuration\RepositoryConfigurationInterface;
+use AppserverIo\Psr\EnterpriseBeans\Description\BeanDescriptorInterface;
 
 /**
  * Simple descriptor implementation for LDAP repositories.
@@ -113,6 +114,20 @@ class RepositoryDescriptor extends BeanDescriptor implements RepositoryDescripto
     }
 
     /**
+     * Returns the query descriptor for the query with the passed name.
+     *
+     * @param string $name The query name to return the descriptor for
+     *
+     * @return \AppserverIo\Ldap\Description\QueryDescriptorInterface|null The query descriptor instance
+     */
+    public function getQuery($name)
+    {
+        if (isset($this->queries[$name])) {
+            return $this->queries[$name];
+        }
+    }
+
+    /**
      * Returns a new descriptor instance.
      *
      * @return \AppserverIo\Ldap\Description\RepositoryDescriptorInterface The descriptor instance
@@ -160,9 +175,17 @@ class RepositoryDescriptor extends BeanDescriptor implements RepositoryDescripto
             $this->setDistinguishedName((DescriptorUtil::trim($distinguishedName)));
         }
 
-        // query for the repositories queries
+        // query for the repositories queries by sub-annotations
         foreach ($annotationInstance->getQueries() as $query) {
-            $this->addQuery(QueryDescriptor::newDescriptorInstance()->fromQueryAnnotation($query));
+            $this->addQuery(QueryDescriptor::newDescriptorInstance()->fromAnnotation($query));
+        }
+
+        // query for the repositories querys by the available reflection methods
+        /** @var \AppserverIo\Lang\Reflection\MethodInterface $reflectionMethod */
+        foreach ($reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $reflectionMethod) {
+            if ($query = QueryDescriptor::newDescriptorInstance()->fromReflectionMethod($reflectionMethod)) {
+                $this->addQuery($query);
+            }
         }
 
         // return the instance
@@ -205,30 +228,31 @@ class RepositoryDescriptor extends BeanDescriptor implements RepositoryDescripto
      * Merges the passed configuration into this one. Configuration values
      * of the passed configuration will overwrite the this one.
      *
-     * @param \AppserverIo\Ldap\Description\RepositoryDescriptorInterface $repositoryDescriptor The configuration to merge
+     * @param \AppserverIo\Psr\EnterpriseBeans\Description\BeanDescriptorInterface $beanDescriptor The configuration to merge
      *
      * @return void
      */
-    public function merge(RepositoryDescriptorInterface $repositoryDescriptor)
+    public function merge(BeanDescriptorInterface $beanDescriptor)
     {
 
         // check if the classes are equal
-        if ($this->getName() !== $repositoryDescriptor->getName()) {
+        /** @var \AppserverIo\Ldap\Description\RepositoryDescriptorInterface $beanDescriptor */
+        if ($this->getName() !== $beanDescriptor->getName()) {
             throw new EnterpriseBeansException(
-                sprintf('You try to merge a repository configuration for "%s" with "%s"', $repositoryDescriptor->getName(), $this->getName())
+                sprintf('You try to merge a repository configuration for "%s" with "%s"', $beanDescriptor->getName(), $this->getName())
             );
         }
 
         // merge the parent bean information
-        parent::merge($repositoryDescriptor);
+        parent::merge($beanDescriptor);
 
         // merge the distinguished name
-        if ($distinguishedName = $repositoryDescriptor->getDistinguishedName()) {
+        if ($distinguishedName = $beanDescriptor->getDistinguishedName()) {
             $this->setDistinguishedName($distinguishedName);
         }
 
         // merge the queries
-        foreach ($repositoryDescriptor->getQueries() as $query) {
+        foreach ($beanDescriptor->getQueries() as $query) {
             $this->addQuery($query);
         }
     }

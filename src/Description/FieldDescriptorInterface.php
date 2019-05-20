@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AppserverIo\Ldap\Description\Configuration\LdapConfigurationInterface
+ * AppserverIo\Ldap\Description\FieldDescriptorInterface
  *
  * NOTICE OF LICENSE
  *
@@ -18,10 +18,13 @@
  * @link      http://www.appserver.io
  */
 
-namespace AppserverIo\Ldap\Description\Configuration;
+namespace AppserverIo\Ldap\Description;
+
+use AppserverIo\Psr\Deployment\DescriptorInterface;
+use AppserverIo\Psr\EnterpriseBeans\Description\NameAwareDescriptorInterface;
 
 /**
- * Interface for LDAP description implementations.
+ * Simple descriptor implementation for LDAP entity field.
  *
  * @author    Tim Wagner <tw@appserver.io>
  * @copyright 2019 TechDivision GmbH <info@appserver.io>
@@ -29,20 +32,20 @@ namespace AppserverIo\Ldap\Description\Configuration;
  * @link      https://github.com/appserver-io/ldap
  * @link      http://www.appserver.io
  */
-interface ConfigurationInterface extends \AppserverIo\Description\Configuration\ConfigurationInterface
+interface FieldDescriptorInterface extends DescriptorInterface, NameAwareDescriptorInterface
 {
 
     /**
-     * Returns the name.
+     * Returns the LDAP name.
      *
-     * @return string The name
+     * @return string The LDAP name
      */
-    public function getName();
+    public function getLdapName();
 
     /**
-     * Returns the description information.
+     * Returns the LDAP type.
      *
-     * @return \AppserverIo\Description\Api\Node\ValueNode The description information
+     * @return string The LDAP type
      */
-    public function getDescription();
+    public function getLdapType();
 }

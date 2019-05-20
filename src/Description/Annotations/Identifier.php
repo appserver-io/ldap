@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AppserverIo\Ldap\Description\Configuration\LdapConfigurationInterface
+ * AppserverIo\Ldap\Description\Annotations\Identifier
  *
  * NOTICE OF LICENSE
  *
@@ -18,31 +18,23 @@
  * @link      http://www.appserver.io
  */
 
-namespace AppserverIo\Ldap\Description\Configuration;
+namespace AppserverIo\Ldap\Description\Annotations;
+
+use Doctrine\Common\Annotations\Annotation\Target;
+use AppserverIo\Psr\EnterpriseBeans\Annotations\AbstractAnnotation;
 
 /**
- * Interface for LDAP description implementations.
+ * Annotation implementation for a LDAP entity identifier.
  *
  * @author    Tim Wagner <tw@appserver.io>
  * @copyright 2019 TechDivision GmbH <info@appserver.io>
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      https://github.com/appserver-io/ldap
  * @link      http://www.appserver.io
+ *
+ * @Annotation
+ * @Target({"PROPERTY"})
  */
-interface ConfigurationInterface extends \AppserverIo\Description\Configuration\ConfigurationInterface
+class Identifier extends AbstractAnnotation
 {
-
-    /**
-     * Returns the name.
-     *
-     * @return string The name
-     */
-    public function getName();
-
-    /**
-     * Returns the description information.
-     *
-     * @return \AppserverIo\Description\Api\Node\ValueNode The description information
-     */
-    public function getDescription();
 }

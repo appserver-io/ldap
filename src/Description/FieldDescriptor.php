@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AppserverIo\Ldap\Description\RepositoryDescriptor
+ * AppserverIo\Ldap\Description\FieldDescriptor
  *
  * NOTICE OF LICENSE
  *
@@ -26,7 +26,8 @@ use AppserverIo\Psr\EnterpriseBeans\EnterpriseBeansException;
 use AppserverIo\Ldap\Description\Annotations\Query;
 use AppserverIo\Ldap\Description\Configuration\QueryConfigurationInterface;
 use AppserverIo\Description\AbstractNameAwareDescriptor;
-use AppserverIo\Lang\Reflection\MethodInterface;
+use AppserverIo\Ldap\Description\Annotations\Field;
+use AppserverIo\Lang\Reflection\PropertyInterface;
 
 /**
  * Simple descriptor implementation for LDAP queries.
@@ -37,65 +38,65 @@ use AppserverIo\Lang\Reflection\MethodInterface;
  * @link      https://github.com/appserver-io/ldap
  * @link      http://www.appserver.io
  */
-class QueryDescriptor extends AbstractNameAwareDescriptor implements QueryDescriptorInterface
+class FieldDescriptor extends AbstractNameAwareDescriptor implements FieldDescriptorInterface
 {
 
     /**
-     * The query search base.
+     * The LDAP name.
      *
      * @var string
      */
-    protected $searchBase;
+    protected $ldapName;
 
     /**
-     * The query filter.
+     * The LDAP type.
      *
      * @var string
      */
-    protected $filter;
+    protected $ldapType;
 
     /**
-     * Sets the query's search base.
+     * Sets the LDAP name.
      *
-     * @param string $searchBase The search base
+     * @param string $ldapName The sLDAP name
      *
      * @return void
      */
-    public function setSearchBase($searchBase)
+    public function setLdapName($ldapName)
     {
-        $this->searchBase = $searchBase;
+        $this->ldapName = $ldapName;
     }
 
     /**
-     * Returns the query's search base.
+     * Returns the LDAP name.
      *
-     * @return string The search base
+     * @return string The LDAP name
      */
-    public function getSearchBase()
+    public function getLdapName()
     {
-        return $this->searchBase;
+        return $this->ldapName;
     }
 
     /**
-     * Sets the query's filter.
+     * Sets the LDAP type.
      *
-     * @param string $filter The filter
+     * @param string $ldapType The LDAP type
      *
      * @return void
      */
-    public function setFilter($filter)
+    public function setLdapType($ldapType)
     {
-        return $this->filter = $filter;
+        return $this->ldapType = $ldapType;
     }
 
     /**
-     * Returns the query's filter.
+     * Returns the LDAP type.
      *
-     * @return string The filter
+     * @return string The LDAP type
      */
-    public function getFilter()
+    public function getLdapType()
     {
-        return $this->filter;
+        return $this->ldapType;
     }
 
     /**
@@ -105,7 +106,7 @@ class QueryDescriptor extends AbstractNameAwareDescriptor implements QueryDescri
      */
     public static function newDescriptorInstance()
     {
-        return new QueryDescriptor();
+        return new FieldDescriptor();
     }
 
     /**
@@ -115,22 +116,22 @@ class QueryDescriptor extends AbstractNameAwareDescriptor implements QueryDescri
      */
     protected function getAnnotationClass()
     {
-        return Query::class;
+        return Field::class;
     }
 
     /**
-     * Initializes the query descriptor instance from the passed reflection method instance.
+     * Initializes the field descriptor instance from the passed reflection property instance.
      *
-     * @param \AppserverIo\Lang\Reflection\MethodInterface $reflectionMethod The reflection method with the query annotation
+     * @param \AppserverIo\Lang\Reflection\PropertyInterface $reflectionProperty The reflection property with the field annotation
      *
      * @return \AppserverIo\Ldap\Description\QueryDescriptorInterface|null The initialized descriptor instance
      */
-    public function fromReflectionMethod(MethodInterface $reflectionMethod)
+    public function fromReflectionProperty(PropertyInterface $reflectionProperty)
     {
 
         // create a new annotation instance
         /** @var \AppserverIo\Ldap\Description\Annotations\Query $annotationInstance */
-        if ($annotationInstance = $this->getMethodAnnotation($reflectionMethod, $this->getAnnotationClass())) {
+        if ($annotationInstance = $this->getPropertyAnnotation($reflectionProperty, $this->getAnnotationClass())) {
             return $this->fromAnnotation($annotationInstance);
         }
     }
@@ -155,14 +156,14 @@ class QueryDescriptor extends AbstractNameAwareDescriptor implements QueryDescri
             $this->setDescription(DescriptorUtil::trim($description));
         }
 
-        // query for the filter and set it
-        if ($filter = (string) $annotationInstance->getFilter()) {
-            $this->setFilter(DescriptorUtil::trim($filter));
+        // query for the LDAP name and set it
+        if ($ldapName = (string) $annotationInstance->getLdapName()) {
+            $this->setLdapName(DescriptorUtil::trim($ldapName));
         }
 
-        // query for the search base and set it
-        if ($searchBase = (string) $annotationInstance->getSearchBase()) {
-            $this->setSearchBase(DescriptorUtil::trim($searchBase));
+        // query for the LDAP type and set it
+        if ($ldapType = (string) $annotationInstance->getLdapType()) {
+            $this->setLdapType(DescriptorUtil::trim($ldapType));
         }
 
         // return the instance
@@ -194,14 +195,14 @@ class QueryDescriptor extends AbstractNameAwareDescriptor implements QueryDescri
             $this->setDescription(DescriptorUtil::trim($description));
         }
 
-        // query for the filter and set it
-        if ($filter = (string) $configuration->getFilter()) {
-            $this->setFilter(DescriptorUtil::trim($filter));
+        // query for the LDAP name and set it
+        if ($ldapName = (string) $configuration->getLdapName()) {
+            $this->setLdapName(DescriptorUtil::trim($ldapName));
         }
 
-        // query for the search base and set it
-        if ($searchBase = (string) $configuration->getSearchBase()) {
-            $this->setSearchBase(DescriptorUtil::trim($searchBase));
+        // query for the LDAP type and set it
+        if ($ldapType = (string) $configuration->getLdapType()) {
+            $this->setLdapType(DescriptorUtil::trim($ldapType));
         }
 
         // return the instance
@@ -222,7 +223,7 @@ class QueryDescriptor extends AbstractNameAwareDescriptor implements QueryDescri
         // check if the classes are equal
         if ($this->getName() !== $queryDescriptor->getName()) {
             throw new EnterpriseBeansException(
-                sprintf('You try to merge a query configuration for "%s" with "%s"', $queryDescriptor->getName(), $this->getName())
+                sprintf('You try to merge a field configuration for "%s" with "%s"', $queryDescriptor->getName(), $this->getName())
             );
         }
 
@@ -231,14 +232,14 @@ class QueryDescriptor extends AbstractNameAwareDescriptor implements QueryDescri
             $this->setDescription($description);
         }
 
-        //  merge the search base
-        if ($searchBase = $queryDescriptor->getSearchBase()) {
-            $this->setSearchBase($searchBase);
+        //  merge the LDAP name base
+        if ($ldapName = $queryDescriptor->getLdapName()) {
+            $this->setLdapName($ldapName);
         }
 
-        //  merge the filter
-        if ($filter = $queryDescriptor->getFilter()) {
-            $this->setFilter($filter);
+        //  merge the LDAP type
+        if ($ldapType = $queryDescriptor->getLdapType()) {
+            $this->setLdapType($ldapType);
         }
     }
 }
