@@ -27,7 +27,6 @@ use AppserverIo\Description\Configuration\ConfigurationInterface;
 use AppserverIo\Psr\EnterpriseBeans\EnterpriseBeansException;
 use AppserverIo\Ldap\Description\Annotations\Entity;
 use AppserverIo\Ldap\Description\Configuration\EntityConfigurationInterface;
-use AppserverIo\Ldap\Description\Configuration\IdentifierConfigurationInterface;
 
 /**
  * Simple descriptor implementation for LDAP entities.
@@ -42,11 +41,18 @@ class EntityDescriptor extends AbstractNameAwareDescriptor implements EntityDesc
 {
 
     /**
+     * The entity class name.
+     *
+     * @var string
+     */
+    protected $className;
+
+    /**
      * The LDAP entity identifier.
      *
      * @var string
      */
-    protected $identifier;
+    protected $identifier = 'dn';
 
     /**
      * The entity repository name.
@@ -61,6 +67,28 @@ class EntityDescriptor extends AbstractNameAwareDescriptor implements EntityDesc
      * @var array
      */
     protected $fields = array();
+
+    /**
+     * Sets the entity class name.
+     *
+     * @param string $className The entity class name
+     *
+     * @return void
+     */
+    public function setClassName($className)
+    {
+        $this->className = $className;
+    }
+
+    /**
+     * Returns the entity class name.
+     *
+     * @return string The entity class name
+     */
+    public function getClassName()
+    {
+        return $this->className;
+    }
 
     /**
      * Sets the entity repository type.
@@ -87,7 +115,7 @@ class EntityDescriptor extends AbstractNameAwareDescriptor implements EntityDesc
     /**
      * Sets the entity identifier.
      *
-     * @param string $identifier
+     * @param string $identifier The identifier
      *
      * @return void
      */
@@ -202,14 +230,19 @@ class EntityDescriptor extends AbstractNameAwareDescriptor implements EntityDesc
             $this->setName($reflectionClass->getShortName());
         }
 
+        // load class name
+        $this->setClassName($reflectionClass->getName());
+
         // query for the description and set it
         if ($description = $annotationInstance->getDescription()) {
             $this->setDescription((DescriptorUtil::trim($description)));
         }
 
-        // query for the repository and set it
+        // query for the repository and set it, or use the default repository name
         if ($repository = $annotationInstance->getRepository()) {
             $this->setRepository((DescriptorUtil::trim($repository)));
+        } else {
+            $this->setRepository(sprintf('%sRepository', $this->getName()));
         }
 
         // load the fields + the identifier from the properties
@@ -247,6 +280,11 @@ class EntityDescriptor extends AbstractNameAwareDescriptor implements EntityDesc
         // query for the description and set it
         if ($description = (string) $configuration->getDescription()) {
             $this->setDescription(DescriptorUtil::trim($description));
+        }
+
+        // query for the class name and set it
+        if ($className = (string) $configuration->getClass()) {
+            $this->setClassName(DescriptorUtil::trim($className));
         }
 
         // query for the repository and set it

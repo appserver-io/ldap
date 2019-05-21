@@ -55,8 +55,20 @@ interface LdapManagerInterface
      * @param array  $args       The arguments passed to the repository's constructor
      *
      * @return object The repository instance
+     * @throws \Exception Is thrown, if the requested instance is NO LDAP repository
      */
     public function lookupRepositoryByEntityName($lookupName, array $args = array());
+
+    /**
+     * Lookup the LDAP entity for the entity with the passed lookup name.
+     *
+     * @param string $lookupName The lookup name of the repository to return the entity for
+     * @param array  $args       The arguments passed to the entity's constructor
+     *
+     * @return object The entity instance
+     * @throws \Exception Is thrown, if the requested instance is NO LDAP entity
+     */
+    public function lookupEntityByRepositoryName($lookupName, array $args = array());
 
     /**
      * Returns the object descriptor for the repository with the passed class name.

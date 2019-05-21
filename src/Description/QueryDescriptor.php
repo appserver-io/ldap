@@ -131,6 +131,11 @@ class QueryDescriptor extends AbstractNameAwareDescriptor implements QueryDescri
         // create a new annotation instance
         /** @var \AppserverIo\Ldap\Description\Annotations\Query $annotationInstance */
         if ($annotationInstance = $this->getMethodAnnotation($reflectionMethod, $this->getAnnotationClass())) {
+            // set the method name as default name, if not configured in the annotation
+            if (empty($annotationInstance->getName())) {
+                $annotationInstance->setName($reflectionMethod->getMethodName());
+            }
+            // initialize the descriptor from the annotation
             return $this->fromAnnotation($annotationInstance);
         }
     }

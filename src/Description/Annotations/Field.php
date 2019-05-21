@@ -69,6 +69,30 @@ class Field extends AbstractBeanAnnotation
     }
 
     /**
+     * Sets the value of the name attribute.
+     *
+     * @param string $name The name attribute to set
+     *
+     * @return void
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * Returns the LDAP field name.
+     *
+     * @param string $ldapName The LDAP field name
+     *
+     * @return void
+     */
+    public function setLdapName($ldapName)
+    {
+        $this->ldapName = $ldapName;
+    }
+
+    /**
      * Returns the LDAP field name.
      *
      * @return string The LDAP field name

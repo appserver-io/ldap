@@ -33,9 +33,16 @@ interface EntityDescriptorInterface extends LdapDescriptorInterface
 {
 
     /**
+     * Returns the entity class name.
+     *
+     * @return string The entity class name
+     */
+    public function getClassName();
+
+    /**
      * Returns the entity identifier.
      *
-     * @return \AppserverIo\Ldap\Description\IdentifierDescriptorInterface
+     * @return string The entity identifier
      */
     public function getIdentifier();
 

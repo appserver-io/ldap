@@ -48,7 +48,7 @@ class LdapNode extends AbstractNode implements LdapConfigurationInterface
      * The array with the repositorys.
      *
      * @var array
-     * DI\Mapping(nodeName="entities/entity", nodeType="array", elementType="AppserverIo\Ldap\Description\Api\Node\EntityNode")
+     * @DI\Mapping(nodeName="entities/entity", nodeType="array", elementType="AppserverIo\Ldap\Description\Api\Node\EntityNode")
      */
     protected $entities = array();
 

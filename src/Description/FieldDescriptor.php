@@ -20,14 +20,13 @@
 
 namespace AppserverIo\Ldap\Description;
 
+use AppserverIo\Lang\Reflection\PropertyInterface;
 use AppserverIo\Description\DescriptorUtil;
+use AppserverIo\Description\AbstractNameAwareDescriptor;
 use AppserverIo\Description\Configuration\ConfigurationInterface;
 use AppserverIo\Psr\EnterpriseBeans\EnterpriseBeansException;
-use AppserverIo\Ldap\Description\Annotations\Query;
-use AppserverIo\Ldap\Description\Configuration\QueryConfigurationInterface;
-use AppserverIo\Description\AbstractNameAwareDescriptor;
 use AppserverIo\Ldap\Description\Annotations\Field;
-use AppserverIo\Lang\Reflection\PropertyInterface;
+use AppserverIo\Ldap\Description\Configuration\FieldConfigurationInterface;
 
 /**
  * Simple descriptor implementation for LDAP queries.
@@ -130,8 +129,19 @@ class FieldDescriptor extends AbstractNameAwareDescriptor implements FieldDescri
     {
 
         // create a new annotation instance
-        /** @var \AppserverIo\Ldap\Description\Annotations\Query $annotationInstance */
+        /** @var \AppserverIo\Ldap\Description\Annotations\Field $annotationInstance */
         if ($annotationInstance = $this->getPropertyAnnotation($reflectionProperty, $this->getAnnotationClass())) {
+            // load the property name
+            $propertyName = $reflectionProperty->getPropertyName();
+            // set the property name as default name, if not configured in the annotation
+            if (empty($annotationInstance->getName())) {
+                $annotationInstance->setName($propertyName);
+            }
+            // set the property name as default LDAP name, if not configured in the annotation
+            if (empty($annotationInstance->getLdapName())) {
+                $annotationInstance->setLdapName($propertyName);
+            }
+            // initialize the descriptor from the annotation
             return $this->fromAnnotation($annotationInstance);
         }
     }
@@ -139,11 +149,11 @@ class FieldDescriptor extends AbstractNameAwareDescriptor implements FieldDescri
     /**
      * Initializes the query descriptor instance from the passed annotation instance.
      *
-     * @param \AppserverIo\Ldap\Description\Annotations\Query $annotationInstance The annoation instance with the query description
+     * @param \AppserverIo\Ldap\Description\Annotations\Field $annotationInstance The annoation instance with the query description
      *
      * @return \AppserverIo\Ldap\Description\QueryDescriptorInterface|null The initialized descriptor instance
      */
-    public function fromAnnotation(Query $annotationInstance)
+    public function fromAnnotation(Field $annotationInstance)
     {
 
         // load the default name to register in naming directory
@@ -181,7 +191,7 @@ class FieldDescriptor extends AbstractNameAwareDescriptor implements FieldDescri
     {
 
         // query whether or not we've preference configuration
-        if (!$configuration instanceof QueryConfigurationInterface) {
+        if (!$configuration instanceof FieldConfigurationInterface) {
             return;
         }
 

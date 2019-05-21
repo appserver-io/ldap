@@ -53,6 +53,14 @@ class EntityNode extends AbstractNode implements EntityConfigurationInterface
     protected $description;
 
     /**
+     * The entity class information.
+     *
+     * @var \AppserverIo\Description\Api\Node\ValueNode
+     * @DI\Mapping(nodeName="class", nodeType="AppserverIo\Description\Api\Node\ValueNode")
+     */
+    protected $class;
+
+    /**
      * The entity repository type information.
      *
      * @var \AppserverIo\Description\Api\Node\ValueNode
@@ -94,6 +102,16 @@ class EntityNode extends AbstractNode implements EntityConfigurationInterface
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Return's the entity class information.
+     *
+     * @return \AppserverIo\Description\Api\Node\ValueNode The entity class information
+     */
+    public function getClass()
+    {
+        return $this->class;
     }
 
     /**
