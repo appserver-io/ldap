@@ -33,6 +33,13 @@ interface EntityConfigurationInterface extends ConfigurationInterface
 {
 
     /**
+     * Return's the entity class information.
+     *
+     * @return \AppserverIo\Description\Api\Node\ValueNode The entity class information
+     */
+    public function getClass();
+
+    /**
      * Returns the entity identifier description information.
      *
      * @return string The entity identifier information

@@ -67,6 +67,18 @@ class Query extends AbstractBeanAnnotation
     }
 
     /**
+     * Sets the value of the name attribute.
+     *
+     * @param string $name The name attribute to set
+     *
+     * @return void
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
      * Returns the search base.
      *
      * @return string The search base
