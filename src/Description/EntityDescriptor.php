@@ -115,7 +115,7 @@ class EntityDescriptor extends AbstractNameAwareDescriptor implements EntityDesc
     /**
      * Sets the entity identifier.
      *
-     * @param string $identifier
+     * @param string $identifier The identifier
      *
      * @return void
      */
