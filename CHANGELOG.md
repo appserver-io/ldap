@@ -1,3 +1,13 @@
+# Version 3.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to appserver-io/description 13.0.* dependency
+
 # Version 2.0.1
 
 ## Bugfixes
